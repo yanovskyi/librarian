@@ -2,6 +2,8 @@
 
 <strong>login/password: admin/admin</strong>
 
+<strong> Демо версія: http://librarian.yanovsky.com.ua </strong>
+
 Проект виконаний з використанням фреймворку Angular 6.0
 
 - Зібраний проект знаходиться в папці "dist/" - достатньо скопіювати файли в середині данної папки на статичний сервер
