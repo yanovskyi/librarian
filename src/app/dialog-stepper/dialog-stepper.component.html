@@ -1,0 +1,232 @@
+<h2 mat-dialog-title #dialogTitle>Додати</h2>
+<mat-dialog-content>
+    <!-- ------------------------------------ -->
+    <!-- Для редагування/додавання бібліотеки -->
+    <!-- ------------------------------------ -->
+    <mat-horizontal-stepper *ngIf="(mode === 'addLibrary') || (mode === 'editLibrary')" [linear]="isLinear" #stepperLibrary>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Назва</ng-template>
+            <mat-form-field style='width: 100%'>
+                <input #libraryName matInput placeholder="Назва бібліотеки" formControlName="firstCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Адреса</ng-template>
+            <mat-form-field style='width: 100%'>
+                <input #libraryAddress matInput placeholder="Адреса бібліотеки" formControlName="secondCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="thirdFormGroup">
+            <form [formGroup]="thirdFormGroup">
+                <ng-template matStepLabel>Координати</ng-template>
+                <mat-form-field>
+                    <input #libraryCoordLat matInput placeholder="Широта (latitude)" [value]="lat" disabled>
+                </mat-form-field>
+                <mat-form-field style='margin-left: 40px'>
+                    <input #libraryCoordLng matInput placeholder="Довгота (longitude)" [value]="lng" disabled>
+                </mat-form-field>
+                <div>
+                    <agm-map style='height: 200px;' [latitude]="lat" [longitude]="lng" (mapClick)="mapClicked($event)">
+                        <agm-marker 
+                            *ngFor="let m of markers; let i = index"
+                            (markerClick)="clickedMarker(m.label, i)"
+                            [latitude]="m.lat"
+                            [longitude]="m.lng"
+                            [label]="m.label"
+                            [markerDraggable]="m.draggable"
+                            (dragEnd)="markerDragEnd(m, $event)">
+                        </agm-marker>
+                    </agm-map>
+                </div>
+                <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Готово</ng-template>
+            <div *ngIf="mode==='addLibrary'" style='margin: 20px'>
+                Все готово для додавання.
+            </div>
+            <div *ngIf="mode==='editLibrary'" style='margin: 20px'>
+                Все готово для зберігання.
+            </div>
+            <div>
+            <button mat-button matStepperPrevious>Назад</button>
+            <button mat-button (click)="stepperLibrary.reset()">Скинути</button>
+            <button *ngIf="mode==='addLibrary'" mat-button (click)="closeDialog()">Додати</button>
+            <button *ngIf="mode==='editLibrary'" mat-button (click)="closeDialog()">Зберегти</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+
+    <!-- ------------------------------------ -->
+    <!-- Для редагування/додавання книжки -->
+    <!-- ------------------------------------ -->
+    <mat-horizontal-stepper *ngIf="(mode === 'addBook') || (mode === 'editBook')" [linear]="isLinear" #stepperBook>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Назва</ng-template>
+            <mat-form-field style='width: 100%'>
+                <input #bookName matInput placeholder="Назва книги" formControlName="firstCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Автор</ng-template>
+            <mat-form-field style='width: 100%'>
+                <input #bookAuthor matInput placeholder="Автор книги" formControlName="secondCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="thirdFormGroup">
+            <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Рік</ng-template>
+            <mat-form-field>
+                <input #bookYear matInput placeholder="Рік видавництва" formControlName="thirdCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="fourthFormGroup">
+            <form [formGroup]="fourthFormGroup">
+            <ng-template matStepLabel>ISBN</ng-template>
+            <mat-form-field style='width: 100%'>
+                <input #bookISBN matInput placeholder="ISBN" formControlName="fourthCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="fifthFormGroup">
+            <form [formGroup]="fifthFormGroup">
+            <ng-template matStepLabel>Обкладинка</ng-template>
+            <mat-form-field style='width: 100%'>
+                <input #bookCover matInput placeholder="Посилання" formControlName="fifthCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Готово</ng-template>
+            <div *ngIf="mode==='addBook'" style='margin: 20px'>
+                Все готово для додавання.
+            </div>
+            <div *ngIf="mode==='editBook'" style='margin: 20px'>
+                Все готово для зберігання.
+            </div>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button (click)="stepperBook.reset()">Скинути</button>
+                <button *ngIf="mode==='addBook'" mat-button (click)="closeDialog()">Додати</button>
+                <button *ngIf="mode==='editBook'" mat-button (click)="closeDialog()">Зберегти</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+
+    <!-- ------------------------------------ -->
+    <!-- Для редагування/додавання екземпляру книжки -->
+    <!-- ------------------------------------ -->
+    <mat-horizontal-stepper *ngIf="(mode === 'addInstance') || (mode === 'editInstance')" [linear]="isLinear" #stepperInstance>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Книга</ng-template>
+            <mat-form-field>
+                <mat-select #instanceBook [value]='instanceBookValue' placeholder="Книга">
+                    <mat-option *ngFor="let book of data.books" [value]="book.id">
+                            {{ book.id }}. {{ book.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Бібліотека</ng-template>
+            <mat-form-field>
+                <mat-select #instanceLibrary [value]='instanceLibraryValue' placeholder="Бібліотека">
+                    <mat-option *ngFor="let library of data.libraries" [value]="library.id">
+                            {{ library.id }}. {{ library.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="statusFormGroup">
+            <form [formGroup]="statusFormGroup">
+            <ng-template matStepLabel>Статус</ng-template>
+                <mat-slide-toggle #instanceReturningStatus [checked]='instanceReturningStatusValue' color='primary'>
+                    <span *ngIf='instanceReturningStatus.checked'>Повернута</span>
+                    <span *ngIf='!instanceReturningStatus.checked'>На руках</span>
+                </mat-slide-toggle>
+            <div style='margin-top: 15px'>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="dateFormGroup">
+            <form [formGroup]="dateFormGroup">
+            <ng-template matStepLabel>Час повернення</ng-template>
+            <mat-form-field>
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" formControlName="dateCtrl" #instanceReturningTime [value]='instanceReturningTimeValue' matInput placeholder="Час повернення">
+            </mat-form-field>
+            <owl-date-time #dt1></owl-date-time>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button matStepperNext>Далі</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Готово</ng-template>
+            <div *ngIf="mode==='addInstance'" style='margin: 20px'>
+                Все готово для додавання.
+            </div>
+            <div *ngIf="mode==='editInstance'" style='margin: 20px'>
+                Все готово для зберігання.
+            </div>
+            <div>
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button (click)="stepperInstance.reset()">Скинути</button>
+                <button *ngIf="mode==='addInstance'" mat-button (click)="closeDialog()">Додати</button>
+                <button *ngIf="mode==='editInstance'" mat-button (click)="closeDialog()">Зберегти</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-dialog-content>

@@ -1,0 +1,15 @@
+<div class='login-form'>
+    <div>
+        <mat-form-field>
+            <input #userLogin matInput placeholder="Ім'я користувача" value="">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <input #userPass matInput placeholder="Пароль" value="" type='password'>
+        </mat-form-field>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" style='margin-top: 20px;' (click) = "loginFunc()">Ввійти</button>
+    </div>
+</div>

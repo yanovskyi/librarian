@@ -1,0 +1,25 @@
+<div>
+    <nav>   
+            <a routerLink="/user" routerLinkActive="active">Онлайн бібліотекар</a>
+            <a *ngIf='loginFlag' routerLink="/admin" routerLinkActive="active">Адміністрування</a>
+        <div style='float:right; padding-right: 20px;'>
+            <div>
+                <div *ngIf='loginFlag' style='margin-top:15px; float:left; color:lightgray;'><span style='color: gray;'>Авторизований як</span> {{userName}}</div>
+                <div *ngIf='!loginFlag && !loginPageFlag' style='margin-top:15px; float:left; color: gray;'>Ввійти</div>
+                <div *ngIf='loginFlag' style='float:left; margin-left: 15px'>
+                    <button mat-icon-button (click) = "logout()">
+                        <mat-icon>power_settings_new</mat-icon>
+                    </button>
+                </div>
+                <div *ngIf='!loginFlag && !loginPageFlag' style='float:left; margin-left: 15px;'>
+                        <button mat-icon-button (click) = "login()">
+                            <mat-icon>vpn_key</mat-icon>
+                        </button>
+                    </div>
+                <div style='clear:both'></div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<router-outlet></router-outlet>

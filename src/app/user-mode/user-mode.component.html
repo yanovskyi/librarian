@@ -1,0 +1,50 @@
+<div class='librarian'>
+    <!-- вікно чату -->
+    <div class='lib-chat' style='float: left;'>
+        <div style='height: 5px'>
+            <mat-progress-bar id='wait_answer'
+                color="warn"
+                mode="indeterminate">
+            </mat-progress-bar>
+        </div>
+        <perfect-scrollbar #libScrollBar class='lib-chat-field'>
+            <div id='chat'></div>
+        </perfect-scrollbar>
+        <div class='lib-chat-input-block'>
+            <div style='float: left; padding-left: 10px'>
+                <mat-form-field class='lib-chat-input'>
+                    <input id='new_message' #newMessage matInput placeholder="Нове повідомлення">
+                </mat-form-field>
+            </div>
+            <div style='float:right; padding-top: 10px'>
+                <button mat-mini-fab color="primary" style='position: relative; right: 0px;' (click)="messageFactory('user', newMessage.value)">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </div>
+            <div style='clear: both'></div>
+        </div>
+    </div>
+    <!-- вікно правого сайдбару в якому відобрається мапа та підказки -->
+    <div class='lib-sidebar' style='float: right; background-color: #fff'>
+        <div style='margin: 20px; border: 2px solid lightgray;'>
+            <agm-map style='height: 300px;' [latitude]="lat" [longitude]="lng" (mapClick)="mapClicked($event)">
+                <agm-marker 
+                    *ngFor="let m of markers; let i = index"
+                    (markerClick)="clickedMarker(m.label, i)"
+                    [latitude]="m.lat"
+                    [longitude]="m.lng"
+                    [label]="m.label"
+                    [markerDraggable]="m.draggable"
+                    (dragEnd)="markerDragEnd(m, $event)">
+                </agm-marker>
+            </agm-map>
+        </div>
+        <div style='margin-left: 20px; margin-right: 20px;'>
+            <div>Підказки</div>
+            <perfect-scrollbar #tipScrollBar class='tip-scroll-bar'>
+                    <div id='tip_block' #tipBlock></div>
+            </perfect-scrollbar>
+        </div>
+    </div>
+    <div style='clear: both'></div>
+</div>

@@ -1,0 +1,33 @@
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Helvetica, Arial, sans-serif;
+  background-color: white;
+}
+
+nav a {
+    text-decoration: none;
+    transition: all 0.5s;
+    color: lightgray;
+    margin-left: 30px;
+    position:relative;
+    top:15px;
+}
+nav a.active {
+    border-radius: 3px;
+    padding: 2px 8px;
+    color:white;
+}
+nav {
+    background-color: #3f51b5;
+    height: 40px;
+
+    * {
+        color: white;
+    }
+}
